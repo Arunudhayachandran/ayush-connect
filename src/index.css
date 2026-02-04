@@ -2,95 +2,122 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* AYUSH Wellness Design System
+   Colors inspired by nature, healing, and traditional Indian wellness
+   Primary: Forest Green (healing, nature, Ayurveda)
+   Secondary: Warm Amber (traditional, wellness, warmth)
+   Accent: Teal (calm, trust, healthcare)
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Colors - Wellness Green Theme */
+    --background: 60 30% 98%;
+    --foreground: 150 30% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 150 30% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 150 30% 10%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Forest Green */
+    --primary: 152 45% 28%;
+    --primary-foreground: 60 30% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Warm Amber */
+    --secondary: 38 92% 50%;
+    --secondary-foreground: 150 30% 10%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - Soft sage */
+    --muted: 150 20% 94%;
+    --muted-foreground: 150 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Healing Teal */
+    --accent: 174 50% 40%;
+    --accent-foreground: 60 30% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 30% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 150 20% 88%;
+    --input: 150 20% 88%;
+    --ring: 152 45% 28%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Extended palette */
+    --ayurveda: 152 45% 28%;
+    --yoga: 262 47% 55%;
+    --naturopathy: 142 55% 42%;
+    --unani: 199 89% 48%;
+    --siddha: 25 95% 53%;
+    --homeopathy: 330 65% 50%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(152 45% 28%), hsl(174 50% 40%));
+    --gradient-secondary: linear-gradient(135deg, hsl(38 92% 50%), hsl(25 95% 53%));
+    --gradient-hero: linear-gradient(180deg, hsl(150 30% 96%), hsl(60 30% 98%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(150 20% 98%));
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(150 30% 10% / 0.03);
+    --shadow-md: 0 4px 6px -1px hsl(150 30% 10% / 0.05), 0 2px 4px -2px hsl(150 30% 10% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(150 30% 10% / 0.08), 0 4px 6px -4px hsl(150 30% 10% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(150 30% 10% / 0.1), 0 8px 10px -6px hsl(150 30% 10% / 0.05);
+    --shadow-glow: 0 0 40px hsl(152 45% 28% / 0.15);
 
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar */
+    --sidebar-background: 150 20% 97%;
+    --sidebar-foreground: 150 30% 10%;
+    --sidebar-primary: 152 45% 28%;
+    --sidebar-primary-foreground: 60 30% 98%;
+    --sidebar-accent: 150 20% 94%;
+    --sidebar-accent-foreground: 150 30% 10%;
+    --sidebar-border: 150 20% 90%;
+    --sidebar-ring: 152 45% 28%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 150 30% 6%;
+    --foreground: 60 30% 96%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 150 25% 10%;
+    --card-foreground: 60 30% 96%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 150 25% 10%;
+    --popover-foreground: 60 30% 96%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 152 45% 45%;
+    --primary-foreground: 150 30% 6%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 38 85% 55%;
+    --secondary-foreground: 150 30% 6%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 150 20% 15%;
+    --muted-foreground: 150 15% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 174 45% 50%;
+    --accent-foreground: 150 30% 6%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 60 30% 96%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 150 20% 18%;
+    --input: 150 20% 18%;
+    --ring: 152 45% 45%;
+
+    --gradient-hero: linear-gradient(180deg, hsl(150 30% 8%), hsl(150 30% 6%));
+    --gradient-card: linear-gradient(145deg, hsl(150 25% 12%), hsl(150 25% 10%));
+
+    --sidebar-background: 150 25% 8%;
+    --sidebar-foreground: 60 30% 96%;
+    --sidebar-primary: 152 45% 45%;
+    --sidebar-primary-foreground: 150 30% 6%;
+    --sidebar-accent: 150 20% 15%;
+    --sidebar-accent-foreground: 60 30% 96%;
+    --sidebar-border: 150 20% 18%;
+    --sidebar-ring: 152 45% 45%;
   }
 }
 
@@ -100,6 +127,184 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/20 rounded-full hover:bg-primary/30 transition-colors;
+  }
+}
+
+@layer components {
+  /* Glass morphism cards */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    @apply border-primary/20 -translate-y-1;
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .gradient-text-secondary {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-secondary);
+  }
+
+  /* Gradient backgrounds */
+  .gradient-bg-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .gradient-bg-secondary {
+    background-image: var(--gradient-secondary);
+  }
+
+  .gradient-bg-hero {
+    background-image: var(--gradient-hero);
+  }
+
+  /* Service type badges */
+  .badge-ayurveda {
+    @apply bg-primary/10 text-primary border-primary/20;
+  }
+
+  .badge-yoga {
+    background-color: hsl(262 47% 55% / 0.1);
+    color: hsl(262 47% 55%);
+    border-color: hsl(262 47% 55% / 0.2);
+  }
+
+  .badge-naturopathy {
+    background-color: hsl(142 55% 42% / 0.1);
+    color: hsl(142 55% 42%);
+    border-color: hsl(142 55% 42% / 0.2);
+  }
+
+  .badge-unani {
+    background-color: hsl(199 89% 48% / 0.1);
+    color: hsl(199 89% 48%);
+    border-color: hsl(199 89% 48% / 0.2);
+  }
+
+  .badge-siddha {
+    background-color: hsl(25 95% 53% / 0.1);
+    color: hsl(25 95% 53%);
+    border-color: hsl(25 95% 53% / 0.2);
+  }
+
+  .badge-homeopathy {
+    background-color: hsl(330 65% 50% / 0.1);
+    color: hsl(330 65% 50%);
+    border-color: hsl(330 65% 50% / 0.2);
+  }
+
+  /* Interactive elements */
+  .interactive-scale {
+    @apply transition-transform duration-200 hover:scale-105 active:scale-95;
+  }
+
+  .interactive-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Link underline animation */
+  .link-underline {
+    @apply relative inline-block;
+  }
+
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-bottom-right scale-x-0 transition-transform duration-300;
+  }
+
+  .link-underline:hover::after {
+    @apply origin-bottom-left scale-x-100;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply animate-pulse bg-muted rounded;
+  }
+
+  /* Rating stars */
+  .star-filled {
+    @apply text-secondary fill-secondary;
+  }
+
+  .star-empty {
+    @apply text-muted-foreground;
+  }
+}
+
+@layer utilities {
+  /* Custom animations */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 6s ease-in-out infinite 2s;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    animation: gradient 8s ease infinite;
+    background-size: 200% 200%;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
   }
 }
