@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          new_data: Json | null
+          old_data: Json | null
+          record_id: string
+          table_name: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id: string
+          table_name: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string
+          table_name?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       blocked_dates: {
         Row: {
           blocked_date: string
@@ -60,11 +99,14 @@ export type Database = {
         Row: {
           booking_date: string
           booking_time: string
+          cancellation_reason: string | null
+          cancelled_at: string | null
           center_id: string
           created_at: string
           doctor_id: string | null
           id: string
           notes: string | null
+          rescheduled_from: string | null
           service_id: string | null
           status: Database["public"]["Enums"]["booking_status"]
           total_amount: number | null
@@ -74,11 +116,14 @@ export type Database = {
         Insert: {
           booking_date: string
           booking_time: string
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
           center_id: string
           created_at?: string
           doctor_id?: string | null
           id?: string
           notes?: string | null
+          rescheduled_from?: string | null
           service_id?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           total_amount?: number | null
@@ -88,11 +133,14 @@ export type Database = {
         Update: {
           booking_date?: string
           booking_time?: string
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
           center_id?: string
           created_at?: string
           doctor_id?: string | null
           id?: string
           notes?: string | null
+          rescheduled_from?: string | null
           service_id?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           total_amount?: number | null
@@ -115,6 +163,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bookings_rescheduled_from_fkey"
+            columns: ["rescheduled_from"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bookings_service_id_fkey"
             columns: ["service_id"]
             isOneToOne: false
@@ -127,6 +182,8 @@ export type Database = {
         Row: {
           address: string
           average_rating: number | null
+          cancellation_fee_percent: number | null
+          cancellation_hours: number | null
           city: string
           closing_time: string | null
           created_at: string
@@ -154,6 +211,8 @@ export type Database = {
         Insert: {
           address: string
           average_rating?: number | null
+          cancellation_fee_percent?: number | null
+          cancellation_hours?: number | null
           city: string
           closing_time?: string | null
           created_at?: string
@@ -181,6 +240,8 @@ export type Database = {
         Update: {
           address?: string
           average_rating?: number | null
+          cancellation_fee_percent?: number | null
+          cancellation_hours?: number | null
           city?: string
           closing_time?: string | null
           created_at?: string
@@ -285,6 +346,62 @@ export type Database = {
             columns: ["center_id"]
             isOneToOne: false
             referencedRelation: "centers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_logs: {
+        Row: {
+          booking_id: string | null
+          channel: string
+          content: string | null
+          created_at: string
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          notification_type: string
+          recipient: string
+          sent_at: string | null
+          status: string
+          subject: string | null
+          user_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          channel: string
+          content?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          notification_type: string
+          recipient: string
+          sent_at?: string | null
+          status?: string
+          subject?: string | null
+          user_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          channel?: string
+          content?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          notification_type?: string
+          recipient?: string
+          sent_at?: string | null
+          status?: string
+          subject?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_logs_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
         ]
@@ -426,6 +543,67 @@ export type Database = {
           },
         ]
       }
+      slot_locks: {
+        Row: {
+          center_id: string
+          created_at: string
+          doctor_id: string | null
+          expires_at: string
+          id: string
+          locked_at: string
+          service_id: string | null
+          slot_date: string
+          slot_time: string
+          user_id: string
+        }
+        Insert: {
+          center_id: string
+          created_at?: string
+          doctor_id?: string | null
+          expires_at?: string
+          id?: string
+          locked_at?: string
+          service_id?: string | null
+          slot_date: string
+          slot_time: string
+          user_id: string
+        }
+        Update: {
+          center_id?: string
+          created_at?: string
+          doctor_id?: string | null
+          expires_at?: string
+          id?: string
+          locked_at?: string
+          service_id?: string | null
+          slot_date?: string
+          slot_time?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "slot_locks_center_id_fkey"
+            columns: ["center_id"]
+            isOneToOne: false
+            referencedRelation: "centers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "slot_locks_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "slot_locks_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       time_slots: {
         Row: {
           center_id: string
@@ -500,6 +678,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_slot_availability: {
+        Args: {
+          p_center_id: string
+          p_doctor_id: string
+          p_exclude_user_id?: string
+          p_slot_date: string
+          p_slot_time: string
+        }
+        Returns: boolean
+      }
+      cleanup_expired_slot_locks: { Args: never; Returns: undefined }
+      create_booking_atomic: {
+        Args: {
+          p_booking_date: string
+          p_booking_time: string
+          p_center_id: string
+          p_doctor_id: string
+          p_notes?: string
+          p_service_id: string
+          p_total_amount?: number
+          p_user_id: string
+        }
+        Returns: string
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
@@ -510,6 +712,17 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      lock_slot: {
+        Args: {
+          p_center_id: string
+          p_doctor_id: string
+          p_service_id: string
+          p_slot_date: string
+          p_slot_time: string
+          p_user_id: string
+        }
+        Returns: string
       }
     }
     Enums: {
@@ -527,6 +740,8 @@ export type Database = {
         | "completed"
         | "cancelled"
         | "no_show"
+        | "pending_payment"
+        | "refunded"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -669,6 +884,8 @@ export const Constants = {
         "completed",
         "cancelled",
         "no_show",
+        "pending_payment",
+        "refunded",
       ],
     },
   },
