@@ -3,7 +3,8 @@ import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   Search, MapPin, Filter, X, Map, List, Star, Clock, 
-  ChevronDown, CheckCircle, Heart, ArrowRight, Navigation
+  ChevronDown, CheckCircle, Heart, ArrowRight, Navigation,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,94 +14,176 @@ import { ServiceBadge } from "@/components/ui/ServiceBadge";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { AYUSH_SERVICES, DISTANCE_OPTIONS, type AyushServiceType } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useCenters, type CenterWithDistance } from "@/hooks/useCenters";
 
-// Mock data for demo
-const mockCenters = [
+// Demo data for when database is empty
+const demoData: CenterWithDistance[] = [
   {
-    id: "1",
+    id: "demo-1",
     name: "Ayurveda Wellness Center",
+    description: "Premier Ayurvedic healthcare with authentic treatments",
     address: "MG Road, Indiranagar",
     city: "Bangalore",
+    state: "Karnataka",
+    phone: "+91 80 1234 5678",
+    email: "info@ayurveda.in",
+    website: "www.ayurveda.in",
+    location_lat: 12.9716,
+    location_lng: 77.5946,
+    service_types: ["ayurveda", "yoga"] as AyushServiceType[],
+    opening_time: "09:00",
+    closing_time: "18:00",
+    working_days: [1, 2, 3, 4, 5, 6],
+    is_verified: true,
+    is_active: true,
+    average_rating: 4.8,
+    total_reviews: 156,
+    total_bookings: 2340,
+    photos: null,
     distance: 2.5,
-    rating: 4.8,
-    reviewCount: 156,
-    serviceTypes: ["ayurveda", "yoga"] as AyushServiceType[],
     isOpen: true,
     availableToday: true,
-    priceRange: "₹500 - ₹2000",
-    image: "🏥",
   },
   {
-    id: "2",
+    id: "demo-2",
     name: "Holistic Health Hub",
+    description: "Comprehensive naturopathy and yoga therapy",
     address: "Koramangala 4th Block",
     city: "Bangalore",
+    state: "Karnataka",
+    phone: "+91 80 2345 6789",
+    email: "hello@holistic.in",
+    website: "www.holistic.in",
+    location_lat: 12.9352,
+    location_lng: 77.6245,
+    service_types: ["naturopathy", "yoga", "ayurveda"] as AyushServiceType[],
+    opening_time: "08:00",
+    closing_time: "20:00",
+    working_days: [0, 1, 2, 3, 4, 5, 6],
+    is_verified: true,
+    is_active: true,
+    average_rating: 4.6,
+    total_reviews: 89,
+    total_bookings: 1567,
+    photos: null,
     distance: 4.2,
-    rating: 4.6,
-    reviewCount: 89,
-    serviceTypes: ["naturopathy", "yoga", "ayurveda"] as AyushServiceType[],
     isOpen: true,
     availableToday: true,
-    priceRange: "₹800 - ₹3000",
-    image: "🌿",
   },
   {
-    id: "3",
+    id: "demo-3",
     name: "Dr. Sharma's Homeopathy Clinic",
+    description: "Effective homeopathic treatments since 1995",
     address: "Jayanagar 9th Block",
     city: "Bangalore",
+    state: "Karnataka",
+    phone: "+91 80 3456 7890",
+    email: "dr@sharma.in",
+    website: "www.drsharma.in",
+    location_lat: 12.9279,
+    location_lng: 77.5937,
+    service_types: ["homeopathy"] as AyushServiceType[],
+    opening_time: "10:00",
+    closing_time: "17:00",
+    working_days: [1, 2, 3, 4, 5],
+    is_verified: true,
+    is_active: true,
+    average_rating: 4.9,
+    total_reviews: 234,
+    total_bookings: 3200,
+    photos: null,
     distance: 5.8,
-    rating: 4.9,
-    reviewCount: 234,
-    serviceTypes: ["homeopathy"] as AyushServiceType[],
     isOpen: false,
     availableToday: false,
-    priceRange: "₹300 - ₹800",
-    image: "💊",
   },
   {
-    id: "4",
-    name: "Siddha Traditional Medicine Center",
+    id: "demo-4",
+    name: "Siddha Traditional Medicine",
+    description: "Authentic Siddha treatments by traditional healers",
     address: "BTM Layout",
     city: "Bangalore",
+    state: "Karnataka",
+    phone: "+91 80 4567 8901",
+    email: "contact@siddha.in",
+    website: "www.siddha.in",
+    location_lat: 12.9166,
+    location_lng: 77.6101,
+    service_types: ["siddha", "ayurveda"] as AyushServiceType[],
+    opening_time: "09:30",
+    closing_time: "18:30",
+    working_days: [1, 2, 3, 4, 5, 6],
+    is_verified: true,
+    is_active: true,
+    average_rating: 4.5,
+    total_reviews: 67,
+    total_bookings: 890,
+    photos: null,
     distance: 7.1,
-    rating: 4.5,
-    reviewCount: 67,
-    serviceTypes: ["siddha", "ayurveda"] as AyushServiceType[],
     isOpen: true,
     availableToday: true,
-    priceRange: "₹600 - ₹1500",
-    image: "🔮",
   },
   {
-    id: "5",
+    id: "demo-5",
     name: "Unani Wellness Clinic",
+    description: "Traditional Unani medicine for holistic healing",
     address: "Whitefield",
     city: "Bangalore",
+    state: "Karnataka",
+    phone: "+91 80 5678 9012",
+    email: "info@unani.in",
+    website: "www.unani.in",
+    location_lat: 12.9698,
+    location_lng: 77.7500,
+    service_types: ["unani"] as AyushServiceType[],
+    opening_time: "10:00",
+    closing_time: "19:00",
+    working_days: [1, 2, 3, 4, 5],
+    is_verified: true,
+    is_active: true,
+    average_rating: 4.4,
+    total_reviews: 45,
+    total_bookings: 560,
+    photos: null,
     distance: 12.3,
-    rating: 4.4,
-    reviewCount: 45,
-    serviceTypes: ["unani"] as AyushServiceType[],
     isOpen: true,
     availableToday: false,
-    priceRange: "₹400 - ₹1200",
-    image: "⚗️",
   },
   {
-    id: "6",
+    id: "demo-6",
     name: "Yoga & Meditation Ashram",
+    description: "Find inner peace with daily yoga and meditation",
     address: "Yelahanka",
     city: "Bangalore",
+    state: "Karnataka",
+    phone: "+91 80 6789 0123",
+    email: "namaste@yogaashram.in",
+    website: "www.yogaashram.in",
+    location_lat: 13.1007,
+    location_lng: 77.5963,
+    service_types: ["yoga", "naturopathy"] as AyushServiceType[],
+    opening_time: "05:00",
+    closing_time: "21:00",
+    working_days: [0, 1, 2, 3, 4, 5, 6],
+    is_verified: true,
+    is_active: true,
+    average_rating: 4.7,
+    total_reviews: 198,
+    total_bookings: 2100,
+    photos: null,
     distance: 15.6,
-    rating: 4.7,
-    reviewCount: 198,
-    serviceTypes: ["yoga", "naturopathy"] as AyushServiceType[],
     isOpen: true,
     availableToday: true,
-    priceRange: "₹200 - ₹1000",
-    image: "🧘",
   },
 ];
+
+const serviceEmojis: Record<string, string> = {
+  ayurveda: "🌿",
+  yoga: "🧘",
+  naturopathy: "🍃",
+  unani: "⚗️",
+  siddha: "🔮",
+  homeopathy: "💊",
+};
 
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -112,6 +195,15 @@ export default function Explore() {
   const [showAvailableToday, setShowAvailableToday] = useState(false);
   const [showOpenNow, setShowOpenNow] = useState(false);
 
+  // Fetch centers from database
+  const { data: dbCenters, isLoading } = useCenters({
+    searchQuery,
+    serviceTypes: selectedServices.length > 0 ? selectedServices : undefined,
+  });
+
+  // Use demo data if database is empty
+  const centers = dbCenters && dbCenters.length > 0 ? dbCenters : demoData;
+
   const toggleService = (serviceId: AyushServiceType) => {
     setSelectedServices((prev) =>
       prev.includes(serviceId)
@@ -120,13 +212,13 @@ export default function Explore() {
     );
   };
 
-  const filteredCenters = mockCenters.filter((center) => {
-    if (selectedServices.length > 0 && !selectedServices.some((s) => center.serviceTypes.includes(s))) {
+  const filteredCenters = centers.filter((center) => {
+    if (selectedServices.length > 0 && !selectedServices.some((s) => center.service_types?.includes(s))) {
       return false;
     }
     if (showAvailableToday && !center.availableToday) return false;
     if (showOpenNow && !center.isOpen) return false;
-    if (center.distance > parseFloat(selectedDistance)) return false;
+    if (center.distance && center.distance > parseFloat(selectedDistance)) return false;
     if (searchQuery && !center.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
@@ -140,6 +232,11 @@ export default function Explore() {
   };
 
   const hasActiveFilters = selectedServices.length > 0 || showAvailableToday || showOpenNow || selectedDistance !== "25";
+
+  const getServiceEmoji = (types: AyushServiceType[]) => {
+    if (!types || types.length === 0) return "🏥";
+    return serviceEmojis[types[0]] || "🏥";
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -313,6 +410,11 @@ export default function Explore() {
           <div className="flex items-center justify-between mb-6">
             <p className="text-muted-foreground">
               <span className="font-semibold text-foreground">{filteredCenters.length}</span> centers found
+              {dbCenters && dbCenters.length === 0 && (
+                <span className="ml-2 text-xs bg-secondary/10 text-secondary px-2 py-0.5 rounded-full">
+                  Demo Data
+                </span>
+              )}
             </p>
             <Button variant="ghost" size="sm" className="gap-2">
               Sort by: Nearest
@@ -320,7 +422,11 @@ export default function Explore() {
             </Button>
           </div>
 
-          {viewMode === "list" ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : viewMode === "list" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredCenters.map((center, index) => (
                 <motion.div
@@ -334,7 +440,7 @@ export default function Explore() {
                       {/* Header */}
                       <div className="flex items-start justify-between mb-4">
                         <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-2xl">
-                          {center.image}
+                          {getServiceEmoji(center.service_types || [])}
                         </div>
                         <button
                           onClick={(e) => {
@@ -358,18 +464,24 @@ export default function Explore() {
 
                       {/* Services */}
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {center.serviceTypes.map((type) => (
+                        {center.service_types?.map((type) => (
                           <ServiceBadge key={type} serviceType={type} size="sm" showIcon={false} />
                         ))}
                       </div>
 
                       {/* Stats */}
                       <div className="flex items-center justify-between text-sm">
-                        <RatingStars rating={center.rating} reviewCount={center.reviewCount} size="sm" />
-                        <span className="text-muted-foreground flex items-center gap-1">
-                          <Navigation className="w-3 h-3" />
-                          {center.distance} km
-                        </span>
+                        <RatingStars 
+                          rating={center.average_rating || 0} 
+                          reviewCount={center.total_reviews || 0} 
+                          size="sm" 
+                        />
+                        {center.distance !== undefined && (
+                          <span className="text-muted-foreground flex items-center gap-1">
+                            <Navigation className="w-3 h-3" />
+                            {center.distance.toFixed(1)} km
+                          </span>
+                        )}
                       </div>
 
                       {/* Footer */}
@@ -389,9 +501,12 @@ export default function Explore() {
                             </span>
                           )}
                         </div>
-                        <span className="text-sm text-muted-foreground">
-                          {center.priceRange}
-                        </span>
+                        {center.is_verified && (
+                          <span className="text-xs text-primary flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" />
+                            Verified
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>
